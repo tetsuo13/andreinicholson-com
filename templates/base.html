@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+<title>{% block title %}Andrei Nicholson{% endblock %}</title>
+<meta name="description" content="Web developer and UI designer." />
+<meta name="author" content="Andrei Nicholson" />
+{% if mobile %}
+<meta name="viewport" content="width=device-width,initial-scale=0.7" />
+{% endif %}
+<link href="//fonts.googleapis.com/css?family=Rosario" rel="stylesheet" type="text/css" />
+
+{% load assets %}
+{% assets "css_all" %}
+<link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css" />
+{% endassets %}
+
+<meta name="robots" content="FOLLOW,INDEX" />
+<link rel="me" href="http://www.andreinicholson.com/" />
+</head>
+{% if mobile %}
+<body onload="setTimeout(function() { window.scrollTo(0, 1); }, 100);">
+{% else %}
+<body>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+{% if not mobile %}
+<!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+{% endif %}
+
+{% if gather_analytics %}
+<script type="text/javascript">
+var pkBaseURL = "http://analytics.andreinicholson.com/";
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://analytics.andreinicholson.com/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+{% endif %}
+
+</body>
+</html>
