@@ -1,0 +1,3 @@
+*.py[c|o]
+static/*
+!static/__init__.py
