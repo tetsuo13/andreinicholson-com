@@ -31,9 +31,9 @@ def index(request):
     }
 
     if 'HTTP_USER_AGENT' in request.META:
-        dictionary['mobile'] = re.match('(android|blackberry|iphone|palm|windows (ce|phone))',
+        dictionary['mobile'] = re.search('(android|blackberry|iphone|palm|windows (ce|phone))',
                                         request.META['HTTP_USER_AGENT'],
-                                        flags=re.IGNORECASE)
+                                        re.IGNORECASE)
 
     if 'SERVER_NAME' in request.META:
         dictionary['gather_analytics'] = request.META['SERVER_NAME'] == 'andreinicholson.com'
