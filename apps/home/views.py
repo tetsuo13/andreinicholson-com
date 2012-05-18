@@ -1,8 +1,7 @@
 from django.http import HttpResponse
-from django.template import Context, loader
+from django.template import Context, loader, RequestContext
 
 from random import choice
-import re
 
 def index(request):
     instagram_links = [
@@ -25,13 +24,12 @@ def index(request):
     ]
 
     dictionary = {
-        'mobile': False,
-        'gather_analytics': False,
-        'instagram_link': choice(instagram_links)
+        'instagram_link': choice(instagram_links),
+        'current_nav': 'home'
     }
 
     if 'HTTP_USER_AGENT' in request.META:
-        dictionary['mobile'] = re.search('(android|blackberry|iphone|palm|windows (ce|phone))',
+        dictionary['mobile'] = re.search('(android|blackberry|iphone|opera mini|palm|windows (ce|phone))',
                                         request.META['HTTP_USER_AGENT'],
                                         re.IGNORECASE)
 
@@ -39,7 +37,7 @@ def index(request):
         dictionary['gather_analytics'] = request.META['SERVER_NAME'] == 'andreinicholson.com'
 
     t = loader.get_template('index.html')
-    c = Context(dictionary)
+    c = RequestContext(request, dictionary)
     response = HttpResponse(t.render(c), mimetype='text/html; charset=utf-8')
     response['X-UA-Compatible'] = 'IE=edge,chrome=1'
     return response

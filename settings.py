@@ -116,7 +116,9 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'home',
+    'apps.base',
+    'apps.home',
+    'apps.notes',
 
     'django_assets',
 
@@ -157,3 +159,7 @@ LOGGING = {
         },
     }
 }
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+  'django.core.context_processors.request',
+)
