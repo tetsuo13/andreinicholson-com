@@ -31,7 +31,7 @@ def index(request):
     }
 
     if 'HTTP_USER_AGENT' in request.META:
-        dictionary['mobile'] = re.search('(android|blackberry|iphone|palm|windows (ce|phone))',
+        dictionary['mobile'] = re.search('(android|blackberry|iphone|opera mini|palm|windows (ce|phone))',
                                         request.META['HTTP_USER_AGENT'],
                                         re.IGNORECASE)
 
