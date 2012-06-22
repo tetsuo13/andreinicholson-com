@@ -1,3 +1,7 @@
+{% load base %}
+{% is_mobile as mobile %}
+{% gather_analytics as analytics %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,34 +10,66 @@
 <meta name="description" content="Web developer and UI designer." />
 <meta name="author" content="Andrei Nicholson" />
 {% if mobile %}
-<meta name="viewport" content="width=device-width,initial-scale=0.7" />
+<meta name="viewport" content="width=initial-scale=0.7,maximum-scale=0.7,user-scalable=0;" />
 {% endif %}
 <link href="//fonts.googleapis.com/css?family=Rosario" rel="stylesheet" type="text/css" />
 
 {% load assets %}
-{% assets "css_all" %}
+{% assets filters="cssutils", output="content.css", "css/normalize.css", "css/base.css", "css/home.css" %}
 <link href="{{ ASSET_URL }}" rel="stylesheet" type="text/css" />
 {% endassets %}
 
 <meta name="robots" content="FOLLOW,INDEX" />
 <link rel="me" href="http://andreinicholson.com/" />
-</head>
-{% if mobile %}
-<body onload="setTimeout(function() { window.scrollTo(0, 1); }, 100);">
-{% else %}
-<body>
-{% endif %}
-
-{% block content %}{% endblock %}
 
 {% if not mobile %}
-<!--[if lt IE 7 ]>
-    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
-    <script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 {% endif %}
 
-{% if gather_analytics %}
+</head>
+
+<body{% if mobile %} onload="setTimeout(function() { window.scrollTo(0, 1); }, 100);"{% endif %}>
+
+<div id="holder">
+<header>
+    <div class="limit">
+        <hgroup>
+            <h2>Andrei Nicholson</h2>
+        </hgroup>
+<!--
+        <nav>
+            <ul>
+                <li><a href="/" class="h{% if current_nav == 'home' %} cur{% endif %}">Home</a></li>
+                <li><a href="/notes" class="b{% if current_nav == 'blog' %} cur{% endif %}">Blog</a></li>
+            </ul>
+        </nav>
+-->
+    </limit>
+</header>
+
+<div id="content" class="limit">
+    {% block content %}{% endblock %}
+</div>
+
+<footer>
+    <div class="limit">
+        <div class="l">
+            <h4>&copy; Andrei Nicholson</h4>
+        </div>
+        <div class="c" />
+    </div>
+
+
+{% if not mobile %}
+<!--[if lt IE 7 ]>
+<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+{% endif %}
+
+{% if analytics %}
 <script type="text/javascript">
 var pkBaseURL = "http://analytics.andreinicholson.com/";
 document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
@@ -45,6 +81,9 @@ piwikTracker.enableLinkTracking();
 } catch( err ) {}
 </script><noscript><p><img src="http://analytics.andreinicholson.com/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
 {% endif %}
+</footer>
+
+</div>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ from django.http import HttpResponse
 # from django.contrib import admin
 # admin.autodiscover()
 
+# TODO Output a "disallow all" for beta subdomain.
 def robots_txt():
     return HttpResponse("""User-agent: *
 Disallow:
@@ -24,7 +25,8 @@ def google_verification():
     return HttpResponse('google-site-verification: google8af796f5e4581853.html')
 
 urlpatterns = patterns('',
-    url(r'^$', 'home.views.index', name='index'),
+    url(r'^$', 'apps.home.views.index', name='index'),
+    url(r'^notes/(?P<path>.*)$', 'apps.notes.views.index', name='notes'),
 
     url(r'^robots\.txt$', lambda r: robots_txt()),
     url(r'^sitemap\.xml$', lambda r: sitemap()),

@@ -1,26 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="container">
-    <h2 id="name">Andrei Nicholson</h2>
-    <div id="intro">I'm a passionate <span class="info style1">web developer</span>
-        and <span class="info style2">UI designer</span>. I create
-        <span class="info style3">solutions</span> that inspire confidence.</div>
+<article>
+    <div id="intro">
+        <h3>I'm a passionate <span class="style1">web developer</span>
+        and <span class="style2">UI designer</span>. I create
+        <span class="style3">solutions</span> that inspire confidence.</h3>
+    </div>
     <hr>
-    <div id="outro">I'm fanatical about user experiences and design.
+    <div id="outro">
+        <h3>I'm fanatical about user experiences and design.
         When there's time I use
         <a href="https://github.com/tetsuo13" rel="me" class="style2">GitHub</a>,
         upload photos to
         <a href="http://www.flickr.com/photos/90329256@N00/" rel="me" class="style1">Flickr</a>,
         get creative with
-        <a href="http://www.tadaa.net/tetsuo13" rel="me" class="style3">tadaa</a> and
-        <a href="{{ instagram_link }}" rel="me" class="style3">Instagram</a> and
+        <a href="http://www.tadaa.net/tetsuo13" rel="me" class="style3">tadaa</a>
+        and
+        <a href="{{ instagram_link }}" rel="me" class="style3">Instagram</a>,
         post on
         <a href="https://twitter.com/tetsuo13" rel="me" class="style4">Twitter</a>,
         and neglect Facebook. Send me an
-        <a href="mailto:contact@andreinicholson.com" rel="me" class="style5">email</a>.</div>
+        <a href="mailto:contact@andreinicholson.com" rel="me" class="style5">email</a>.</h3>
+    </div>
 
-    <div id="footer">
+    <aside>
         <div class="l">
             <h3 class="style3">Areas of Interest</h3>
             <p>Mobile web development<br>
@@ -32,6 +36,7 @@
             <h3 class="style2">Get in Touch</h3>
             <a href="mailto:contact@andreinicholson.com">contact@andreinicholson.com</a>
         </div>
-    </div>
-</div>
+        <div class="c" />
+    </aside>
+</article>
 {% endblock %}
