@@ -28,14 +28,6 @@ def index(request):
         'current_nav': 'home'
     }
 
-    if 'HTTP_USER_AGENT' in request.META:
-        dictionary['mobile'] = re.search('(android|blackberry|iphone|opera mini|palm|windows (ce|phone))',
-                                        request.META['HTTP_USER_AGENT'],
-                                        re.IGNORECASE)
-
-    if 'SERVER_NAME' in request.META:
-        dictionary['gather_analytics'] = request.META['SERVER_NAME'] == 'andreinicholson.com'
-
     t = loader.get_template('index.html')
     c = RequestContext(request, dictionary)
     response = HttpResponse(t.render(c), mimetype='text/html; charset=utf-8')
