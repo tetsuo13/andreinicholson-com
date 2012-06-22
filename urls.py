@@ -26,7 +26,7 @@ def google_verification():
 
 urlpatterns = patterns('',
     url(r'^$', 'apps.home.views.index', name='index'),
-    url(r'^notes/(?P<path>.*)$', 'apps.notes.views.index', name='notes'),
+    #url(r'^notes/(?P<path>.*)$', 'apps.notes.views.index', name='notes'),
 
     url(r'^robots\.txt$', lambda r: robots_txt()),
     url(r'^sitemap\.xml$', lambda r: sitemap()),

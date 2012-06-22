@@ -118,7 +118,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'apps.base',
     'apps.home',
-    'apps.notes',
+    #'apps.notes',
 
     'django_assets',
 
