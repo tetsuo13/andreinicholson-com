@@ -22,6 +22,9 @@ The project is nearly self-contained.
    below this project.
 3. Create an alias in htdocs of the `fcgi` directory and let `.htaccess`
    take care of the rest.
+4. Run `manage.py collectstatic` and
+   `manage.py assets build --parse-templates` to take care of building CSS and
+   image files.
 
 ## License
 
