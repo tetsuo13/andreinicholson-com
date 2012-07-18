@@ -74,11 +74,15 @@ footer {
 footer h4 {
     margin-top: 1em;
 }
-footer section ul {
+footer nav {
+    float: right;
+}
+footer nav ul {
     list-style-type: none;
 }
-footer section ul li {
+footer nav ul li {
     display: inline;
+    padding-left: 1em;
 }
 
 div.limit {
