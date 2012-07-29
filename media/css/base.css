@@ -81,8 +81,23 @@ footer nav ul {
     list-style-type: none;
 }
 footer nav ul li {
-    display: inline;
     padding-left: 1em;
+    float: left;
+}
+footer nav ul li a {
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-image: url(/s/img/badges.png);
+}
+footer nav ul li a.gh {
+    background-position: 0px -50px;
+}
+footer nav ul li a.li {
+    background-position: 0px -25px;
+}
+footer nav ul li a.fl {
+    background-position: 0px -75px;
 }
 
 div.limit {
