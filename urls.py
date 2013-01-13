@@ -2,6 +2,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponse
 
+import os
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -34,6 +36,10 @@ urlpatterns = patterns('',
 
     url(r'^' + settings.STATIC_URL[1:-1] + '/(?P<path>.*)$',
         'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
+
+    url(r'^project/keepasstordp/(?P<path>.*)$', 'django.views.static.serve',
+        {'document_root': os.path.join(settings.ROOT, 'project/keepasstordp'),
+         'show_indexes': True}),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
