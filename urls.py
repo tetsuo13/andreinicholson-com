@@ -37,13 +37,6 @@ urlpatterns = patterns('',
     url(r'^' + settings.STATIC_URL[1:-1] + '/(?P<path>.*)$',
         'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
 
-    url(r'^project/keepasstordp/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': os.path.join(settings.ROOT, 'project/keepasstordp'),
-         'show_indexes': True}),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^project/(?P<path>.*)$',
+        'apps.base.views.project_access'),
 )
