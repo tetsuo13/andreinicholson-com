@@ -4,6 +4,24 @@ from django.http import HttpResponse
 
 import os
 
+# TODO Output a "disallow all" for beta subdomain.
+def robots_txt(request):
+    return HttpResponse("""User-agent: *
+Disallow:
+Sitemap: http://andreinicholson.com/sitemap.xml""")
+
+def google_verification(request):
+    return HttpResponse('google-site-verification: google8af796f5e4581853.html')
+
+def sitemap(request):
+    return HttpResponse("""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>http://andreinicholson.com</loc>
+        <changefreq>monthly</changefreq>
+    </url>
+</urlset>""")
+
 def project_access(request, path):
     from piwikapi.tracking import PiwikTracker
 

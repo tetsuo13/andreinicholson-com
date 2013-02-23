@@ -4,39 +4,14 @@ from django.http import HttpResponse
 
 import os
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
-
-# TODO Output a "disallow all" for beta subdomain.
-def robots_txt():
-    return HttpResponse("""User-agent: *
-Disallow:
-Sitemap: http://andreinicholson.com/sitemap.xml""")
-
-def sitemap():
-    return HttpResponse("""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url>
-        <loc>http://andreinicholson.com</loc>
-        <changefreq>monthly</changefreq>
-    </url>
-</urlset>""")
-
-def google_verification():
-    return HttpResponse('google-site-verification: google8af796f5e4581853.html')
-
 urlpatterns = patterns('',
     url(r'^$', 'apps.home.views.index', name='index'),
     #url(r'^notes/(?P<path>.*)$', 'apps.notes.views.index', name='notes'),
 
-    url(r'^robots\.txt$', lambda r: robots_txt()),
-    url(r'^sitemap\.xml$', lambda r: sitemap()),
-    url(r'^google8af796f5e4581853\.html$', lambda r: google_verification()),
-
+    url(r'^robots\.txt$', 'apps.base.views.robots_txt'),
+    url(r'^sitemap\.xml$', 'apps.base.views.sitemap'),
+    url(r'^google8af796f5e4581853\.html$', 'apps.base.views.google_verification'),
     url(r'^' + settings.STATIC_URL[1:-1] + '/(?P<path>.*)$',
         'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
-
-    url(r'^project/(?P<path>.*)$',
-        'apps.base.views.project_access'),
+    url(r'^project/(?P<path>.*)$', 'apps.base.views.project_access'),
 )
