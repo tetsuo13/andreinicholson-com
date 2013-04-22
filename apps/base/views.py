@@ -27,11 +27,9 @@ def project_access(request, path):
 
     pt = PiwikTracker(9, request)
     pt.set_api_url('http://analytics.andreinicholson.com/piwik.php')
-
-    # TODO: Using server IP address unfortunately. Piwik token auth is secret.
-    #pt.set_ip(request.META['REMOTE_ADDR'])
-    #pt.set_token_auth('')
-
+    pt.set_ip(request.META['REMOTE_ADDR'])
+    pt.set_token_auth(request.session.get('piwik_token_auth',
+                                          get_piwik_token_auth()))
     pt.do_track_page_view(path)
 
     show_indexes = False
@@ -43,3 +41,15 @@ def project_access(request, path):
 
     return serve(request, path, os.path.join(settings.ROOT, 'project'),
                  show_indexes)
+
+def get_piwik_token_auth():
+    """Get the Piwik token auth from the static file if exists
+    """
+    try:
+        auth = open(os.path.join(settings.STATIC_ROOT, 'piwik_token_auth.txt'),
+                    'r').read().strip()
+    except IOError:
+        # Match default value from PiwikTracker.
+        auth = False
+    return auth
+

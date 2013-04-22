@@ -26,6 +26,12 @@ The project is nearly self-contained.
    `manage.py assets build --parse-templates` to take care of building CSS and
    image files.
 
+Piwik is used in several areas, most notably in the base application views. In
+order for the visitor's IP address to be recognized, a token_auth is required.
+Create a file named `piwik_token_auth.txt` in the `static` directory with the
+authorization token. Without this file, it will use the server's IP as the
+visitor's.
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
