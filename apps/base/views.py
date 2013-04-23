@@ -4,11 +4,16 @@ from django.http import HttpResponse
 
 import os
 
-# TODO Output a "disallow all" for beta subdomain.
 def robots_txt(request):
-    return HttpResponse("""User-agent: *
-Disallow:
-Sitemap: http://andreinicholson.com/sitemap.xml""")
+    robots = ['User-agent: *']
+
+    if request.get_host().startswith('beta.'):
+        robots.append('Disallow: /')
+    else:
+        robots.append('Disallow:')
+        robots.append('Sitemap: http://andreinicholson.com/sitemap.xml')
+
+    return HttpResponse('\n'.join(robots))
 
 def google_verification(request):
     return HttpResponse('google-site-verification: google8af796f5e4581853.html')
