@@ -1,11 +1,11 @@
-from jspacker import JavaScriptPacker
+from .jspacker import JavaScriptPacker
 from webassets.filter import Filter
 
 
-__all__ = ('JSPackerFilter',)
+__all__ = ('JSPacker',)
 
 
-class JSPackerFilter(Filter):
+class JSPacker(Filter):
     """Reduces the size of Javascript using an inline compression
     algorithm, i.e. the script will be unpacked on the client side
     by the browser.

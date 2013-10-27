@@ -15,9 +15,10 @@ also serve in other places.
 
 import os
 from os import path
+from webassets import six
 from webassets.merge import BaseHunk
 from webassets.filter import Filter, freezedicts
-from webassets.utils import md5_constructor
+from webassets.utils import md5_constructor, pickle
 
 
 __all__ = ('FilesystemCache', 'MemoryCache', 'get_cache',)
@@ -36,7 +37,7 @@ def make_hashable(data):
     return freezedicts(data)
 
 
-def make_md5(data):
+def make_md5(*data):
     """Make a md5 hash based on``data``.
 
     Specifically, this knows about ``Hunk`` objects, and makes sure
@@ -59,11 +60,15 @@ def make_md5(data):
                 for d in walk(k): yield d
                 for d in walk(obj[k]): yield d
         elif isinstance(obj, BaseHunk):
-            yield obj.data()
+            yield obj.data().encode('utf-8')
         elif isinstance(obj, Filter):
-            yield str(hash(obj))
-        elif isinstance(obj, (int, basestring)):
-            yield str(obj)
+            yield str(hash(obj)).encode('utf-8')
+        elif isinstance(obj, int):
+            yield str(obj).encode('utf-8')
+        elif isinstance(obj, six.text_type):
+            yield obj.encode('utf-8')
+        elif isinstance(obj, six.binary_type):
+            yield obj
         else:
             raise ValueError('Cannot MD5 type %s' % type(obj))
     md5 = md5_constructor()
@@ -72,14 +77,22 @@ def make_md5(data):
     return md5.hexdigest()
 
 
+def safe_unpickle(string):
+    """Unpickle the string, or return ``None`` if that fails."""
+    try:
+        return pickle.loads(string)
+    except:
+        return None
+
+
 class BaseCache(object):
     """Abstract base class.
 
     The cache key must be something that is supported by the Python hash()
-    function.
+    function. The cache value may be a string, or anything that can be pickled.
 
     Since the cache is used for multiple purposes, all webassets-internal code
-    should always tag it's keys with an id, like so:
+    should always tag its keys with an id, like so:
 
         key = ("tag", actual_key)
 
@@ -87,10 +100,11 @@ class BaseCache(object):
     """
 
     def get(self, key):
-        """Should return the cache contents, or False."""
+        """Should return the cache contents, or False.
+        """
         raise NotImplementedError()
 
-    def set(self, key):
+    def set(self, key, value):
         raise NotImplementedError()
 
 
@@ -111,8 +125,8 @@ class MemoryCache(BaseCache):
         self.cache = {}
 
     def __eq__(self, other):
-        """Return equality with the config values
-        that instantiate this instance.
+        """Return equality with the config values that instantiate
+        this instance.
         """
         return False == other or \
                None == other or \
@@ -142,6 +156,8 @@ class FilesystemCache(BaseCache):
     """Uses a temporary directory on the disk.
     """
 
+    V = 2   # We have changed the cache format once
+
     def __init__(self, directory):
         self.directory = directory
 
@@ -154,20 +170,22 @@ class FilesystemCache(BaseCache):
                id(self) == id(other)
 
     def get(self, key):
-        filename = path.join(self.directory, '%s' % make_md5(key))
+        filename = path.join(self.directory, '%s' % make_md5(self.V, key))
         if not path.exists(filename):
             return None
         f = open(filename, 'rb')
         try:
-            return f.read()
+            result = f.read()
         finally:
             f.close()
 
+        return safe_unpickle(result)
+
     def set(self, key, data):
-        filename = path.join(self.directory, '%s' % make_md5(key))
+        filename = path.join(self.directory, '%s' % make_md5(self.V, key))
         f = open(filename, 'wb')
         try:
-            f.write(data)
+            f.write(pickle.dumps(data))
         finally:
             f.close()
 

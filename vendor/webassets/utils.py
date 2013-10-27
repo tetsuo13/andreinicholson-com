@@ -1,10 +1,14 @@
+from webassets import six
 import contextlib
 import os
 import sys
 from itertools import takewhile
 
+from .exceptions import BundleError
 
-__all__ = ('md5_constructor', 'common_path_prefix', 'working_directory')
+
+__all__ = ('md5_constructor', 'pickle', 'set', 'StringIO',
+           'common_path_prefix', 'working_directory')
 
 
 if sys.version_info >= (2, 5):
@@ -13,6 +17,31 @@ if sys.version_info >= (2, 5):
 else:
     import md5
     md5_constructor = md5.new
+
+
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+
+try:
+    set
+except NameError:
+    from sets import Set as set
+else:
+    set = set
+
+
+from webassets.six import StringIO
+
+
+try:
+    from urllib import parse as urlparse
+except ImportError:     # Python 2
+    import urlparse
+    import urllib
+
 
 
 def common_path_prefix(paths, sep=os.path.sep):
@@ -30,16 +59,24 @@ def common_path_prefix(paths, sep=os.path.sep):
 
 
 @contextlib.contextmanager
-def working_directory(path):
+def working_directory(directory=None, filename=None):
     """A context manager which changes the working directory to the given
     path, and then changes it back to its previous value on exit.
 
     Filters will often find this helpful.
+
+    Instead of a ``directory``, you may also give a ``filename``, and the
+    working directory will be set to the directory that file is in.s
     """
+    assert bool(directory) != bool(filename)   # xor
+    if not directory:
+        directory = os.path.dirname(filename)
     prev_cwd = os.getcwd()
-    os.chdir(path)
-    yield
-    os.chdir(prev_cwd)
+    os.chdir(directory)
+    try:
+        yield
+    finally:
+        os.chdir(prev_cwd)
 
 
 def make_option_resolver(clazz=None, attribute=None, classes=None,
@@ -92,7 +129,7 @@ def make_option_resolver(clazz=None, attribute=None, classes=None,
             return instantiate(option, env)
 
         # If it is a string
-        elif isinstance(option, basestring):
+        elif isinstance(option, six.string_types):
             parts = option.split(':', 1)
             key = parts[0]
             arg = parts[1] if len(parts) > 1 else None
@@ -144,3 +181,15 @@ def RegistryMetaclass(clazz=None, attribute=None, allow_none=True, desc=None):
     return Metaclass
 
 
+def cmp_debug_levels(level1, level2):
+    """cmp() for debug levels, returns True if ``level1`` is higher
+    than ``level2``."""
+    level_ints = {False: 0, 'merge': 1, True: 2}
+    try:
+        cmp = lambda a, b: (a > b) - (a < b)  # 333
+        return cmp(level_ints[level1], level_ints[level2])
+    except KeyError as e:
+        # Not sure if a dependency on BundleError is proper here. Validating
+        # debug values should probably be done on assign. But because this
+        # needs to happen in two places (Environment and Bundle) we do it here.
+        raise BundleError('Invalid debug value: %s' % e)

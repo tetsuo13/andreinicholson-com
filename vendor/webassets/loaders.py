@@ -8,11 +8,13 @@ import os, sys
 from os import path
 import glob, fnmatch
 import types
+from webassets import six
 try:
     import yaml
 except ImportError:
     pass
 
+from webassets import six
 from webassets import Environment
 from webassets.bundle import Bundle
 from webassets.importlib import import_module
@@ -29,7 +31,8 @@ class LoaderError(Exception):
 
 
 class YAMLLoader(object):
-    """Will load bundles from a YAML configuration file.
+    """Will load an environment or a set of bundles from
+    `YAML <http://en.wikipedia.org/wiki/YAML>`_ files.
     """
 
     def __init__(self, file_or_filename):
@@ -47,7 +50,7 @@ class YAMLLoader(object):
         Each item yielded will be either a string representing a file path
         or a bundle."""
         contents = data.get('contents', [])
-        if isinstance(contents, basestring):
+        if isinstance(contents, six.string_types):
             contents = contents,
         for content in contents:
             if isinstance(content, dict):
@@ -59,13 +62,15 @@ class YAMLLoader(object):
         kwargs = dict(
             filters=data.get('filters', None),
             output=data.get('output', None),
-            debug=data.get('debug', None))
+            debug=data.get('debug', None),
+            extra=data.get('extra', {}),
+            depends=data.get('depends', None))
         return Bundle(*list(self._yield_bundle_contents(data)), **kwargs)
 
-    def _get_bundles(self, obj):
+    def _get_bundles(self, obj, known_bundles=None):
         """Return a dict that keys bundle names to bundles."""
         bundles = {}
-        for key, data in obj.iteritems():
+        for key, data in six.iteritems(obj):
             if data is None:
                 data = {}
             bundles[key] = self._get_bundle(data)
@@ -78,6 +83,8 @@ class YAMLLoader(object):
             for i, item in enumerate(bundle.contents):
                 if item in bundles:
                     contents[i] = bundles[item]
+                elif known_bundles and item in known_bundles:
+                    contents[i] = known_bundles[item]
             # cast back to a tuple
             contents = tuple(contents)
             if contents != bundle.contents:
@@ -89,17 +96,18 @@ class YAMLLoader(object):
 
         The filename can be False if it is unknown.
         """
-        if isinstance(self.file_or_filename, basestring):
+        if isinstance(self.file_or_filename, six.string_types):
             return open(self.file_or_filename), self.file_or_filename
 
         file = self.file_or_filename
         return file, getattr(file, 'name', False)
 
-    def load_bundles(self):
-        """Load a list of ``Bundle`` instances defined in the YAML
-        file.
+    def load_bundles(self, environment=None):
+        """Load a list of :class:`Bundle` instances defined in the YAML file.
 
-        Expects the following format::
+        Expects the following format:
+
+        .. code-block:: yaml
 
             bundle-name:
                 filters: sass,cssutils
@@ -107,20 +115,51 @@ class YAMLLoader(object):
                 contents:
                     - css/jquery.ui.calendar.css
                     - css/jquery.ui.slider.css
+            another-bundle:
+                # ...
+
+        Bundles may reference each other:
+
+        .. code-block:: yaml
+
+            js-all:
+                contents:
+                    - jquery.js
+                    - jquery-ui    # This is a bundle reference
+            jquery-ui:
+                contents: jqueryui/*.js
+
+        If an ``environment`` argument is given, it's bundles
+        may be referenced as well. Note that you may pass any
+        compatibly dict-like object.
+
+        Finally, you may also use nesting:
+
+        .. code-block:: yaml
+
+            js-all:
+                contents:
+                    - jquery.js
+                    # This is a nested bundle
+                    - contents: "*.coffee"
+                      filters: coffeescript
+
         """
         # TODO: Support a "consider paths relative to YAML location, return
         # as absolute paths" option?
         f, _ = self._open()
         try:
             obj = self.yaml.load(f) or {}
-            return self._get_bundles(obj)
+            return self._get_bundles(obj, environment)
         finally:
             f.close()
 
     def load_environment(self):
-        """Load an ``Environment`` instance defined in the YAML file.
+        """Load an :class:`Environment` instance defined in the YAML file.
 
-        Expects the following format::
+        Expects the following format:
+
+        .. code-block:: yaml
 
             directory: ../static
             url: /media
@@ -131,42 +170,48 @@ class YAMLLoader(object):
                 another_custom_config_value: foo
 
             bundles:
-                bundle-name:
-                    filters: sass,cssutils
-                    output: cache/default.css
-                    contents:
-                        - css/jquery.ui.calendar.css
-                        - css/jquery.ui.slider.css
+                # ...
+
+        All values, including ``directory`` and ``url`` are optional. The
+        syntax for defining bundles is the same as for
+        :meth:`~.YAMLLoader.load_bundles`.
+
+        Sample usage::
+
+            from webassets.loaders import YAMLLoader
+            loader = YAMLLoader('asset.yml')
+            env = loader.load_environment()
+
+            env['some-bundle'].urls()
         """
         f, filename = self._open()
         try:
             obj = self.yaml.load(f) or {}
 
-            # construct the environment
-            if not 'url' in obj or not 'directory' in obj:
-                raise LoaderError('"url" and "directory" must be defined')
-            directory = obj['directory']
-            if filename:
-                # If we know the location of the file, make sure that the
-                # paths included are considered relative to the file location.
-                directory = path.normpath(path.join(path.dirname(filename), directory))
-            env = Environment(directory, obj['url'])
+            env = Environment()
 
-            # load environment settings
+            # Load environment settings
             for setting in ('debug', 'cache', 'versions', 'url_expire',
-                            'auto_build',
+                            'auto_build', 'url', 'directory', 'manifest',
                             # TODO: The deprecated values; remove at some point
                             'expire', 'updater'):
                 if setting in obj:
                     setattr(env, setting, obj[setting])
 
-            # load custom config options
+            # Treat the 'directory' option special, make it relative to the
+            # path of the YAML file, if we know it.
+            if filename and 'directory' in env.config:
+                env.directory = path.normpath(
+                    path.join(path.dirname(filename),
+                              env.config['directory']))
+
+            # Load custom config options
             if 'config' in obj:
                 env.config.update(obj['config'])
 
-            # load bundles
+            # Load bundles
             bundles = self._get_bundles(obj.get('bundles', {}))
-            for name, bundle in bundles.iteritems():
+            for name, bundle in six.iteritems(bundles):
                 env.register(name, bundle)
 
             return env
@@ -187,7 +232,7 @@ class PythonLoader(object):
             try:
                 try:
                     self.module = import_module(module_name)
-                except ImportError, e:
+                except ImportError as e:
                     raise LoaderError(e)
             finally:
                 sys.path.pop(0)
@@ -211,7 +256,7 @@ class PythonLoader(object):
         """
         try:
             return getattr(self.module, 'environment')
-        except AttributeError, e:
+        except AttributeError as e:
             raise LoaderError(e)
 
 
@@ -241,7 +286,7 @@ class GlobLoader(object):
     def with_file(self, filename, then_run):
         """Call ``then_run`` with the file contents.
         """
-        file = open(filename, 'r')
+        file = open(filename, 'rb')
         try:
             contents = file.read()
             try:

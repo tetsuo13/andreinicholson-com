@@ -2,24 +2,23 @@
 
 Usage:
 
-    ./manage.py assets rebuild
+    ./manage.py assets build
 
-        Rebuild all known assets; this requires tracking to be enabled:
-        Only assets that have previously been built and tracked are
+        Build all known assets; this requires tracking to be enabled: Only
+        assets that have previously been built and tracked are
         considered "known".
 
-    ./manage.py assets rebuild --parse-templates
+    ./manage.py assets build --parse-templates
 
-        Try to find as many of the project's templates (hopefully all),
-        and check them for the use of assets. Rebuild all the assets
-        discovered in this way. If tracking is enabled, the tracking
-        database will be replaced by the newly found assets.
+        Try to find as many of the project's templates (hopefully all), and
+        check them for the use of assets. Build all the assets discovered in
+        this way. If tracking is enabled, the tracking database will be
+        replaced by the newly found assets.
 
     ./manage.py assets watch
 
-        Like rebuild, but continues to watch for changes, and rebuilds
-        assets right away. Useful for cases where building takes some
-        time.
+        Like ``build``, but continues to watch for changes, and builds assets
+        right away. Useful for cases where building takes some time.
 """
 
 import sys
@@ -39,8 +38,8 @@ from django_assets.loaders import get_django_template_dirs, DjangoLoader
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
         make_option('--parse-templates', action='store_true',
-            help='Rebuild assets found by parsing project templates '
-                 'instead of using the tracking database.'),
+            help='Search project templates to find bundles. You need '
+                 'this if you directly define your bundles in templates.'),
     )
     help = 'Manage assets.'
     args = 'subcommand'

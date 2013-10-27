@@ -6,6 +6,7 @@ from __future__ import with_statement
 
 import os
 import pickle
+from webassets import six
 
 from webassets.bundle import has_placeholder, is_url, get_all_bundle_files
 from webassets.merge import FileHunk
@@ -21,11 +22,13 @@ class VersionIndeterminableError(Exception):
     pass
 
 
-class Version(object):
+class Version(six.with_metaclass(RegistryMetaclass(
+    clazz=lambda: Version, attribute='determine_version',
+    desc='a version implementation'))):
     """A Version class that can be assigned to the ``Environment.versioner``
     attribute.
 
-    Given a bundle, this must determine it's "version". This version can then
+    Given a bundle, this must determine its "version". This version can then
     be used in the output filename of the bundle, or appended to the url as a
     query string, in order to expire cached assets.
 
@@ -36,10 +39,6 @@ class Version(object):
 
     A single instance can be used with different environments.
     """
-
-    __metaclass__ = RegistryMetaclass(
-        clazz=lambda: Version, attribute='determine_version',
-        desc='a version implementation')
 
     def determine_version(self, bundle, hunk=None, env=None):
         """Return a string that represents the current version of the given
@@ -162,11 +161,12 @@ class HashVersion(Version):
                     'output target has a placeholder')
 
         hasher = self.hasher()
-        hasher.update(hunk.data())
+        hasher.update(hunk.data().encode('utf-8'))
         return hasher.hexdigest()[:self.length]
 
 
-class Manifest(object):
+class Manifest(six.with_metaclass(RegistryMetaclass(
+    clazz=lambda: Manifest, desc='a manifest implementation'))):
     """Persists information about the versions bundles are at.
 
     The Manifest plays a role only if you insert the bundle version in your
@@ -185,29 +185,19 @@ class Manifest(object):
           example, this hash would need to be recalculated every time a new
           process is started. (*)
 
-    (*) It needs to happen only once per process, because each Bundle is smart
+    (*) It needs to happen only once per process, because Bundles are smart
         enough to cache their own version in memory.
 
     A special case is the ``Environment.auto_build`` option. A manifest
-    implementation should re-read it's data from it's out-of-process data
+    implementation should re-read its data from its out-of-process data
     source on every request, if ``auto_build`` is enabled. Otherwise, if your
     application is served by multiple processes, then after an automatic
     rebuild in one process all other processes would continue to serve an old
     version of the file (or attach an old version to the query string).
 
-    It is important for the manifest to read from it's data source
-    on every request if autobuild is enabled (at least if you want to support
-    the option). if the data source is
-    cached in the process space, and your app is served by multiple
-    processes, then you might yield old version information, and you might
-    continue to serve the old file, or attach the wrong url expire string.
-
-    A manifest instance is currently only not guaranteed to function correctly
+    A manifest instance is currently not guaranteed to function correctly
     with multiple Environment instances.
     """
-
-    __metaclass__ = RegistryMetaclass(
-        clazz=lambda: Manifest, desc='a manifest implementation')
 
     def remember(self, bundle, env, version):
         raise NotImplementedError()
@@ -222,7 +212,7 @@ get_manifest = Manifest.resolve
 class FileManifest(Manifest):
     """Stores version data in a single file.
 
-    Uses Python's pickle module to stores a dict data structure. You should
+    Uses Python's pickle module to store a dict data structure. You should
     only use this when the manifest is read-only in production, since it is
     not multi-process safe. If you use ``auto_build`` in production, use
     ``CacheManifest`` instead.
@@ -262,6 +252,31 @@ class FileManifest(Manifest):
     def _save_manifest(self):
         with open(self.filename, 'wb') as f:
             pickle.dump(self.manifest, f, protocol=2)
+
+
+class JsonManifest(FileManifest):
+    """Same as ``FileManifest``, but uses JSON instead of pickle."""
+
+    id = 'json'
+
+    def __init__(self, *a, **kw):
+        try:
+            import json
+        except ImportError:
+            import simplejson as json
+        self.json = json
+        super(JsonManifest, self).__init__(*a, **kw)
+
+    def _load_manifest(self):
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as f:
+                self.manifest = self.json.load(f)
+        else:
+            self.manifest = {}
+
+    def _save_manifest(self):
+        with open(self.filename, 'w') as f:
+            self.json.dump(self.manifest, f, indent=4, sort_keys=True)
 
 
 class CacheManifest(Manifest):

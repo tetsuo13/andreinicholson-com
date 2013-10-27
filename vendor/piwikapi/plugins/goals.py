@@ -1,10 +1,10 @@
 """
-Copyright (c) 2012, Nicolas Kuttler.
+Copyright (c) 2012-2013, Nicolas Kuttler.
 All rights reserved.
 
 License: BSD, see LICENSE for details
 
-Source and development at https://github.com/nkuttler/python-piwikapi
+Source and development at https://github.com/piwik/piwik-python-api
 """
 
 from piwikapi.analytics import PiwikAnalytics

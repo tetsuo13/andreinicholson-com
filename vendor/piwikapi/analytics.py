@@ -1,16 +1,20 @@
 """
-Copyright (c) 2012, Nicolas Kuttler.
+Copyright (c) 2012-2013, Nicolas Kuttler.
 All rights reserved.
 
 License: BSD, see LICENSE for details
 
-Source and development at https://github.com/nkuttler/python-piwikapi
+Source and development at https://github.com/piwik/piwik-python-api
 """
 
-import urllib
-import urllib2
+try:
+    from urllib.request import Request, urlopen
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib2 import Request, urlopen
+    from urllib import urlencode
 
-from exceptions import ConfigurationError
+from .exceptions import ConfigurationError
 
 
 class PiwikAnalytics(object):
@@ -43,11 +47,10 @@ class PiwikAnalytics(object):
         """
         Removes a query parameter
 
-        :param key: The parameter to remove 
+        :param key: The parameter to remove
         """
         if key in self.p:
             del self.p[key]
-
 
     def get_parameter(self, key):
         """
@@ -140,7 +143,7 @@ class PiwikAnalytics(object):
         if len(self.p):
             qs = self.api_url
             qs += '?'
-            qs += urllib.urlencode(self.p)
+            qs += urlencode(self.p)
         else:
             pass
         return qs
@@ -151,7 +154,7 @@ class PiwikAnalytics(object):
 
         :rtype: str
         """
-        request = urllib2.Request(self.get_query_string())
-        response = urllib2.urlopen(request)
+        request = Request(self.get_query_string())
+        response = urlopen(request)
         body = response.read()
         return body

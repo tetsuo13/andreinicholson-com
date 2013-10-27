@@ -1,9 +1,16 @@
 import cgi
 import datetime
-import json
 import random
 import re
-import unittest
+import sys
+try:
+    import json
+except ImportError:
+    import simplejson as json
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 from piwikapi.analytics import PiwikAnalytics
 from piwikapi.exceptions import InvalidParameter
@@ -39,8 +46,8 @@ class TrackerBaseTestCase(PiwikAPITestCase):
             'HTTPS': '',
         }
         self.request = FakeRequest(headers)
-        self.pt = PiwikTracker(self.settings.PIWIK_SITE_ID, self.request)
-        self.pt.set_api_url(self.settings.PIWIK_TRACKING_API_URL)
+        self.pt = PiwikTracker(self.settings['PIWIK_SITE_ID'], self.request)
+        self.pt.set_api_url(self.settings['PIWIK_TRACKING_API_URL'])
         self.pt.set_custom_variable(
             1,
             'testrun',
@@ -280,7 +287,7 @@ class TrackerClassTestCase(TrackerBaseTestCase):
 
     def test_missing_api_url(self):
         try:
-            pt = PiwikTracker(self.settings.PIWIK_SITE_ID, self.request)
+            pt = PiwikTracker(self.settings['PIWIK_SITE_ID'], self.request)
             pt.do_track_page_view('fake title')
             invalid_config = True
         except ConfigurationError:
@@ -311,7 +318,8 @@ class TrackerVerifyDebugTestCase(TrackerBaseTestCase):
         self.assertRegexpMatches(
             r,
             re.escape(action_title),
-            "Action title not found, expected %s" % action_title
+            "Action title not found"
+            #"Action title not found, expected %s" % action_title
         )
 
     def test_default_user_is_not_authenticated(self):
@@ -361,7 +369,7 @@ class TrackerVerifyDebugTestCase(TrackerBaseTestCase):
         )
 
     def test_token_auth_succeeds(self):
-        self.pt.set_token_auth(self.settings.PIWIK_TOKEN_AUTH)
+        self.pt.set_token_auth(self.settings['PIWIK_TOKEN_AUTH'])
         r = self.pt.do_track_page_view(
             self.get_title('test title auth test')
         )
@@ -379,7 +387,7 @@ class TrackerVerifyDebugTestCase(TrackerBaseTestCase):
         """
         ip = self.request.META['REMOTE_ADDR']
         title = self.get_title('test ip (auth) %s' % ip)
-        self.pt.set_token_auth(self.settings.PIWIK_TOKEN_AUTH)
+        self.pt.set_token_auth(self.settings['PIWIK_TOKEN_AUTH'])
 
         r = self.pt.do_track_page_view(title)
         self.assertNotRegexpMatches(
@@ -401,7 +409,7 @@ class TrackerVerifyDebugTestCase(TrackerBaseTestCase):
                 "a random error..."
         )
 
-        self.pt.set_token_auth(self.settings.PIWIK_TOKEN_AUTH)
+        self.pt.set_token_auth(self.settings['PIWIK_TOKEN_AUTH'])
         r = self.pt.do_track_page_view(title)
         self.assertRegexpMatches(
             r,
@@ -426,7 +434,7 @@ class TrackerVerifyDebugTestCase(TrackerBaseTestCase):
 
         id = self.pt.get_random_visitor_id()
         self.pt.set_visitor_id(id)
-        self.pt.set_token_auth(self.settings.PIWIK_TOKEN_AUTH)
+        self.pt.set_token_auth(self.settings['PIWIK_TOKEN_AUTH'])
         r = self.pt.do_track_page_view(self.get_title('visitor id with auth'))
         self.assertRegexpMatches(
             r,
@@ -452,7 +460,7 @@ class TrackerVerifyBaseTestCase(TrackerBaseTestCase, AnalyticsBaseTestCase):
             'testsegment',
             self.segment,
         )
-        self.pt.set_token_auth(self.settings.PIWIK_TOKEN_AUTH)  # verify hack
+        self.pt.set_token_auth(self.settings['PIWIK_TOKEN_AUTH'])  # verify hack
         self.pt.set_ip(self.get_random_ip())
 
         # Set up the analytics query
@@ -468,11 +476,14 @@ class TrackerVerifyBaseTestCase(TrackerBaseTestCase, AnalyticsBaseTestCase):
         Get a variable from the last visit
         """
         try:
-            self.a.set_parameter('token_auth', self.settings.PIWIK_TOKEN_AUTH)
-            data = json.loads(self.a.send_request())
+            self.a.set_parameter('token_auth', self.settings['PIWIK_TOKEN_AUTH'])
+            if sys.version_info[0] >= 3:
+                data = json.loads(self.a.send_request().decode('utf-8'))
+            else:
+                data = json.loads(self.a.send_request())
             data = data[-1]
         except IndexError:
-            print "Request apparently not logged!"
+            print("Request apparently not logged!")
             raise
         except KeyError:
             self.debug(data)
@@ -489,10 +500,13 @@ class TrackerVerifyBaseTestCase(TrackerBaseTestCase, AnalyticsBaseTestCase):
         Get an action variable from the last visit
         """
         try:
-            self.a.set_parameter('token_auth', self.settings.PIWIK_TOKEN_AUTH)
-            data = json.loads(self.a.send_request())[-1]['actionDetails'][0]
+            self.a.set_parameter('token_auth', self.settings['PIWIK_TOKEN_AUTH'])
+            if sys.version_info[0] >= 3:
+                data = json.loads(self.a.send_request().decode('utf-8'))[-1]['actionDetails'][0]
+            else:
+                data = json.loads(self.a.send_request())[-1]['actionDetails'][0]
         except IndexError:
-            print "Request apparently not logged!"
+            print("Request apparently not logged!")
             raise
         try:
             return data[key]
@@ -551,8 +565,11 @@ class TrackerVerifyTestCase(TrackerVerifyBaseTestCase):
         """
         url = 'http://out.example.com/out/15'
         r = self.pt.do_track_action(url, 'link')
-        self.a.set_parameter('token_auth', self.settings.PIWIK_TOKEN_AUTH)
-        data = json.loads(self.a.send_request())[0]
+        self.a.set_parameter('token_auth', self.settings['PIWIK_TOKEN_AUTH'])
+        if sys.version_info[0] >= 3:
+            data = json.loads(self.a.send_request().decode('utf-8'))[0]
+        else:
+            data = json.loads(self.a.send_request())[0]
         self.assertEqual(
             url,
             self.get_av('url'),
