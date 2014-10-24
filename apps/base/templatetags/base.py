@@ -16,3 +16,4 @@ def gather_analytics(context):
     if 'SERVER_NAME' not in context['request'].META:
         return False
     return context['request'].META['SERVER_NAME'] == 'andreinicholson.com'
+
