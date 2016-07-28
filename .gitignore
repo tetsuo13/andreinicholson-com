@@ -1,4 +1,4 @@
-*.py[c|o]
-project/*
-static/*
-!static/__init__.py
+_site
+.sass-cache
+Gemfile.lock
+

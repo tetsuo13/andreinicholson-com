@@ -1,0 +1,152 @@
+html,
+body {
+    height: 100%;
+}
+html {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+body {
+    font-family: "Istok Web", Helvetica, sans-serif;
+    background-color: #fff;
+    color: #333345;
+}
+div#holder {
+    min-height: 100%;
+    position: relative;
+}
+div#content {
+    padding-bottom: 7em;
+}
+header,
+footer {
+    width: 100%;
+    float: left;
+    /*padding: 15px 0;*/
+    background-color: #273a3e;
+    color: #fff;
+}
+header {
+    height: 5em;
+    -webkit-box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 1);
+    margin-bottom: 2.5em;
+
+    hgroup {
+        float: left;
+    }
+
+    /** Site nav bar. */
+    nav {
+        float: right;
+        text-align: right;
+        max-width: 15em;
+        margin: 0;
+
+        ul {
+            list-style: none;
+
+            li {
+                display: inline;
+                padding-left: 1em;
+            }
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: lowercase;
+            padding: 0.1em 0.5em 0.1em 0.5em;
+
+            .h:hover {
+                background-color: #ff573b;
+            }
+            .b:hover {
+                background-color: #6690fe;
+            }
+        }
+    }
+}
+
+footer {
+    bottom: 0;
+    height: 3.5em;
+    position: absolute;
+
+    h4 {
+        margin-top: 1em;
+    }
+    nav {
+        float: right;
+
+        ul {
+            list-style-type: none;
+
+            li {
+                padding-left: 1em;
+                float: left;
+
+                a {
+                    display: block;
+                    width: 25px;
+                    height: 25px;
+                    background-image: url(/images/badges.png);
+
+                    &.gh {
+                        background-position: 0px -50px;
+                    }
+                    &.li {
+                        background-position: 0px -25px;
+                    }
+                    &.fl {
+                        background-position: 0px -75px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.limit {
+    clear: both;
+    max-width: 43.5em;
+    position: relative;
+    margin: 0 auto;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/** Red */
+.style1 {
+    color: #FF573B;
+}
+/** Green */
+.style2 {
+    color: #56D862;
+}
+/** Blue */
+.style3 {
+    color: #6690FE;
+}
+/** Purple */
+.style4 {
+    color: #a67dc6;
+}
+/** Beige */
+.style5 {
+    color: #cac780;
+}
+
+div.l {
+    float: left;
+}
+div.r {
+    float: right;
+}
+div.c {
+    clear: both;
+}
+
