@@ -1,0 +1,13 @@
+baseURL = "https://andreinicholson.com/"
+disableRSS = true
+enableRobotsTXT = true
+
+[params]
+  description = "Software developer and UI designer."
+  author = "Andrei Nicholson"
+  email = "contact@andreinicholson.com"
+  twitter_username = "tetsuo13"
+  github_username = "tetsuo13"
+  flickr_link = "90329256@N00"
+  instagram_username = "tetsuo13"
+  linkedin_link = "andrei-nicholson/6/697/2a4"

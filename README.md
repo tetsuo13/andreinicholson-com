@@ -1,4 +1,3 @@
-This is the personal web site http://andreinicholson.com
+This is the personal web site https://andreinicholson.com/
 
-Generated with Jekyll.
-
+Generated with Hugo.

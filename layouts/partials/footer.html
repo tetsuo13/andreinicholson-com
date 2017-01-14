@@ -1,0 +1,20 @@
+<footer>
+    <div class="limit">
+        <div class="l">
+            <h4>&copy; {{ .Site.Params.Author }}</h4>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="https://github.com/{{ .Site.Params.github_username }}" class="gh" title="Fork me on GitHub"></a></li>
+                <li><a href="https://secure.flickr.com/photos/{{ .Site.Params.flickr_link }}" class="fl"></a></li>
+                <li><a href="https://twitter.com/{{ .Site.Params.twitter_username }}" class="tw" title="You should follow me on Twitter"></a></li>
+                <li><a href="https://www.linkedin.com/pub/{{ .Site.Params.linkedin_link }}" class="li"></a></li>
+            </ul>
+        </nav>
+
+        <div class="c"></div>
+    </div>
+</footer>
+
+{{ partial "analytics.html" . }}

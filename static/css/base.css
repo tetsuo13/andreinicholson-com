@@ -34,81 +34,69 @@ header {
     -webkit-box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 1);
     box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 1);
     margin-bottom: 2.5em;
-
-    hgroup {
+}
+    header hgroup {
         float: left;
     }
-
-    /** Site nav bar. */
-    nav {
+    header nav {
         float: right;
         text-align: right;
         max-width: 15em;
         margin: 0;
-
-        ul {
+    }
+        header nav ul {
             list-style: none;
-
-            li {
+        }
+            header nav ul li {
                 display: inline;
                 padding-left: 1em;
             }
-        }
-
-        a {
+        header nav a {
             color: #fff;
             text-decoration: none;
             text-transform: lowercase;
             padding: 0.1em 0.5em 0.1em 0.5em;
-
-            .h:hover {
+        }
+            header nav a .h:hover {
                 background-color: #ff573b;
             }
-            .b:hover {
-                background-color: #6690fe;
+            header nav a .b:hover {
+                 background-color: #6690fe;
             }
-        }
-    }
-}
 
 footer {
     bottom: 0;
     height: 3.5em;
     position: absolute;
-
-    h4 {
+}
+    footer h4 {
         margin-top: 1em;
     }
-    nav {
+    footer nav {
         float: right;
-
-        ul {
+    }
+        footer nav ul {
             list-style-type: none;
-
-            li {
+        }
+            footer nav ul li {
                 padding-left: 1em;
                 float: left;
-
-                a {
+            }
+                footer nav ul li a {
                     display: block;
                     width: 25px;
                     height: 25px;
-                    background-image: url(/images/badges.png);
-
-                    &.gh {
+                    background-image: url(/img/badges.png);
+                }
+                    footer nav ul li a.gh {
                         background-position: 0px -50px;
                     }
-                    &.li {
+                    footer nav ul li a.li {
                         background-position: 0px -25px;
                     }
-                    &.fl {
+                    footer nav ul li a.fl {
                         background-position: 0px -75px;
                     }
-                }
-            }
-        }
-    }
-}
 
 div.limit {
     clear: both;
@@ -149,4 +137,3 @@ div.r {
 div.c {
     clear: both;
 }
-
