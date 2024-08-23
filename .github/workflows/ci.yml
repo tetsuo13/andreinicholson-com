@@ -1,0 +1,22 @@
+name: Continuous integration
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3.0.0
+        with:
+          hugo-version: latest
+
+      - name: Build
+        working-directory: src
+        run: hugo --minify --logLevel info
+

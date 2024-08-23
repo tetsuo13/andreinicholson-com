@@ -1,4 +1,3 @@
-This is the personal web site https://andreinicholson.com/
+This is the personal website https://andreinicholson.com/
 
 Generated with [Hugo](https://gohugo.io/).
-
