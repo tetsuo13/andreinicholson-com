@@ -17,6 +17,5 @@ jobs:
           hugo-version: latest
 
       - name: Build
-        working-directory: src
         run: hugo --minify --logLevel info
 
