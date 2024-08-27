@@ -2,6 +2,8 @@ name: Continuous integration
 
 on:
   push:
+    paths-ignore:
+      - README.md
 
 jobs:
   build:
@@ -19,3 +21,10 @@ jobs:
       - name: Build
         run: hugo --minify --logLevel info
 
+      - name: Upload artifact
+        #if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: public/
+          retention-days: 1
