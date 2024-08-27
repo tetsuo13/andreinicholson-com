@@ -1,0 +1,62 @@
+:root {
+  --keyword-color-1: #ff573b;
+  --keyword-color-2: #56d862;
+  --keyword-color-3: #6690fe;
+  --keyword-color-4: #a67dc6;
+  --keyword-color-5: #cac780;
+}
+
+body {
+  font-family: Inter, sans-serif;
+  background: #fff;
+}
+
+.home-hero {
+  padding-left: 50px;
+  margin-top: 65px;
+  max-width: 50rem;
+}
+  .home-hero h1 {
+    padding-top: 100px;
+    font-size: 62px;
+  }
+  .home-hero h2 {
+    font-size: 40px;
+    padding-top: 20px;
+    padding-bottom: 60px;
+  }
+  .home-hero ul {
+    padding-left: 0;
+  }
+    .home-hero ul li {
+      display: inline;
+    }
+      .home-hero ul li:not(:last-child) {
+        padding-right: 30px;
+      }
+  .home-hero .keyword-1 {
+    color: var(--keyword-color-1);
+  }
+  .home-hero .keyword-2 {
+    color: var(--keyword-color-2);
+  }
+  .home-hero .keyword-3 {
+    color: var(--keyword-color-3);
+  }
+
+
+@media only screen and (max-width: 768px) {
+  .home-hero {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 0;
+    max-width: none;
+  }
+    .home-hero h1 {
+      padding-top: 100px;
+      font-size: 48px;
+    }
+    .home-hero h2 {
+      font-size: 34px;
+    }
+}

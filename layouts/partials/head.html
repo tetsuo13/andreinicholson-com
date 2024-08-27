@@ -19,7 +19,11 @@
   "name": "{{ .Site.Params.author }}",
   "email": "{{ .Site.Params.email }}",
   "description": "{{ .Site.Params.description }}",
-  "url": "{{ .Site.BaseURL }}",
+  "url": "{{ .Site.BaseURL }}"
 }
 </script>
 
+<!-- CSS files are read in alphabetical order. Be mindful of file names if order matters. -->
+{{ with $styles := resources.Match "css/*.css" | resources.Concat "main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" media="screen">
+{{ end }}

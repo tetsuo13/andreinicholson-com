@@ -7,7 +7,9 @@
 </head>
 <body>
   {{ block "main" . }}{{ end }}
-  {{ partial "analytics" . }}
+
+  {{ if not hugo.IsServer }}
+    {{ partial "analytics" . }}
+  {{ end }}
 </body>
 </html>
-
