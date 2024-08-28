@@ -1,1 +1,4 @@
-public
+# Generated files by hugo
+/public/
+/.hugo_build.lock
+/.idea
