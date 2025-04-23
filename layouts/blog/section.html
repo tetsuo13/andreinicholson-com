@@ -4,24 +4,22 @@
 
 {{ $pages := where site.RegularPages "Type" "blog" }}
 {{ range $pages }}
-<article class="my-8" itemscope itemtype="https://schema.org/BlogPosting" itemid="{{ .RelPermalink }}">
-  <header>
-    <h1 itemprop="name">
-      <a href="{{ .RelPermalink }}" rel="bookmark">{{ .Title }}</a>
-    </h1>
-    <div>
+  <article class="my-8" itemscope itemtype="https://schema.org/BlogPosting" itemid="{{ .Permalink }}">
+    <header>
+      <h1 itemprop="name">
+        <a href="{{ .RelPermalink }}" rel="bookmark">{{ .Title }}</a>
+      </h1>
       <time itemprop="datePublished" datetime="{{ .PublishDate.Format "2006-01-02" }}">
         {{ .PublishDate | time.Format ":date_long" }}
       </time>
-    </div>
-  </header>
-  <section itemprop="abstract">
-    {{ .Description | .Page.RenderString }}
-  </section>
-  <nav class="pt-4">
-    <a href="{{ .RelPermalink }}">Continue reading</a>
-  </nav>
-</article>
+    </header>
+    <section itemprop="abstract">
+      {{ .Description | .Page.RenderString }}
+    </section>
+    <nav class="pt-4">
+      <a href="{{ .RelPermalink }}">Continue reading</a>
+    </nav>
+  </article>
 {{ end }}
 
 {{ end }}
