@@ -1,15 +1,11 @@
-<meta name="description" content="{{ .Site.Params.description }}">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="{{ .Site.Params.author }}">
+<meta name="description" content="{{ .Site.Params.description }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="author" content="{{ .Site.Params.author }}" />
 
-<link rel="canonical" href="{{ .Permalink }}">
-<link rel="home" href="{{ .Site.BaseURL }}">
+<link rel="canonical" href="{{ .Permalink }}" />
+<link rel="home" href="{{ .Site.BaseURL }}" />
 
-<meta property="og:site_name" content="{{ .Site.Title }}">
-<meta property="og:type" content="website">
-<meta property="og:title" content="{{ .Site.Title }}">
-<meta property="og:description" content="{{ .Site.Params.description }}">
-<meta property="og:url" content="{{ .Site.BaseURL }}">
+{{ template "_internal/opengraph.html" . }}
 
 <script type="application/ld+json">
 {
@@ -23,7 +19,6 @@
 }
 </script>
 
-<!-- CSS files are read in alphabetical order. Be mindful of file names if order matters. -->
-{{ with $styles := resources.Match "css/*.css" | resources.Concat "main.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" media="screen">
-{{ end }}
+{{- with $css := resources.Get "css/output.css" | resources.Fingerprint "sha256" -}}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
+{{- end -}}

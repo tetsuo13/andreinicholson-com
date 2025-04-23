@@ -1,0 +1,13 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --color-home-keyword-1: #ff573b;
+  --color-home-keyword-2: #56d862;
+  --color-home-keyword-3: #6690fe;
+  --color-home-keyword-4: #a67dc6;
+  --color-home-keyword-5: #cac780;
+}

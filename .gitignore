@@ -1,4 +1,5 @@
-# Generated files by hugo
-/public/
-/.hugo_build.lock
-/.idea
+/assets/css/output.css
+/node_modules
+/public
+.hugo_build.lock
+.idea
