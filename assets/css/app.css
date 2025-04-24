@@ -11,3 +11,52 @@
   --color-home-keyword-4: #a67dc6;
   --color-home-keyword-5: #cac780;
 }
+
+article section > h2,
+article section p {
+  @apply mb-4;
+}
+
+article section > h2 {
+  @apply text-2xl font-semibold;
+}
+
+article section div.highlight {
+  @apply mt-6 mb-6;
+}
+article section pre {
+  @apply block whitespace-pre overflow-x-scroll p-4 text-sm;
+}
+
+article section ul,
+article section ol {
+  @apply mb-4 list-inside;
+}
+
+article section li {
+  @apply not-first:mt-2 pl-4;
+}
+
+article section ul {
+  @apply list-disc;
+}
+
+article section ol {
+  @apply list-decimal;
+}
+
+article section img {
+  @apply mx-auto shadow-lg rounded-lg;
+}
+
+article section a {
+  @apply underline;
+}
+
+article section blockquote {
+  @apply italic;
+}
+
+article section p code {
+  @apply bg-gray-200 px-2 py-1 text-amber-700 text-sm;
+}

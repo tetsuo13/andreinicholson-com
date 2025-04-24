@@ -1,36 +1,5 @@
 {{ define "main" }}
 
-<!--
-<main itemscope itemtype="https://schema.org/Person" class="home-hero">
-  <h1>Hi, I'm <span itemprop="givenName">Andrei</span>.</h1>
-
-  <h2 itemprop="knowsAbout">
-    I'm a passionate <span class="keyword-1">developer</span> and <span class="keyword-2">UI designer</span>.
-    I create <span class="keyword-3">solutions</span> that inspire confidence.
-  </h2>
-
-  <ul>
-    <li>
-      {{ $image := resources.Get "/images/github-logo.svg" | fingerprint }}
-      <a href="https://github.com/{{ .Site.Params.gitHubUsername }}" target="_blank" rel="noreferrer" itemprop="sameAs" aria-label="{{ .Site.Params.Author }} on GitHub"><img
-        src="{{ $image.RelPermalink }}" alt="GitHub logo" width="42" height="42" /></a>
-    </li>
-
-    <li>
-      {{ $image := resources.Get "/images/flickr-logo.svg" | fingerprint }}
-      <a href="https://www.flickr.com/photos/{{ .Site.Params.flickrPhotostream }}" target="_blank" rel="noreferrer" itemprop="sameAs" aria-label="{{ .Site.Params.Author }} occasionally posting photos to Flickr"><img
-        src="{{ $image.RelPermalink }}" alt="Flickr logo" width="42" height="42" /></a>
-    </li>
-
-    <li>
-      {{ $image := resources.Get "/images/linkedin-logo.svg" | fingerprint }}
-      <a href="https://www.linkedin.com/in/{{ .Site.Params.linkedInProfile }}" target="_blank" rel="noreferrer" itemprop="sameAs" aria-label="{{ .Site.Params.Author }} on LinkedIn"><img
-        src="{{ $image.RelPermalink }}" alt="LinkedIn logo" width="42" height="42" /></a>
-    </li>
-  </ul>
-</main>
--->
-
 <div class="px-5 py-16 md:py-48 items-center justify-center" itemscope itemtype="https://schema.org/Person">
   <h1 class="md:text-6xl text-3xl mb-2 font-bold text-black tracking-tight leading-tight">
     Hi, I'm <span itemprop="givenName">Andrei</span>.
