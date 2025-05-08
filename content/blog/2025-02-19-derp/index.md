@@ -12,7 +12,7 @@ Veniam esse tenderloin, burgdoggen occaecat laboris turducken salami nulla. Duis
 
 Whether `isFancy` is `true` or `false`, you always have a `<Counter />` as the first child of the `div` returned from the root `App` component.
 
-# This is a test
+## This is a test
 
 Bacon ipsum dolor amet doner esse prosciutto incididunt pastrami. Consequat leberkas capicola venison ground round non. Ex est elit alcatra, landjaeger reprehenderit proident. In magna landjaeger esse burgdoggen ut. Eiusmod sint quis chicken labore voluptate nulla fugiat consectetur reprehenderit corned beef venison. Chicken non spare ribs, dolor tail t-bone frankfurter sirloin.
 
