@@ -17,7 +17,7 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265 # v19.1.0
         with:
           globs: content/blog/**/*.md
-          config: .markdown-lint.yml
+          config: .markdownlint.yml
 
       - name: Setup Node.js
         uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
