@@ -2,8 +2,8 @@
 
 <article itemscope itemtype="https://schema.org/BlogPosting" itemid="{{ .Permalink }}">
   <header>
-    <h1 class="font-semibold text-3xl text-black" itemprop="name">{{ .Title }}</h1>
-    <time class="text-gray-400 font-semibold" itemprop="datePublished" datetime="{{ .PublishDate.Format "2006-01-02" }}">
+    <h1 class="font-semibold text-3xl text-black pb-2" itemprop="name">{{ .Title }}</h1>
+    <time class="text-gray-400 font-semibold uppercase" itemprop="datePublished" datetime="{{ .PublishDate.Format "2006-01-02" }}">
       {{ .PublishDate | time.Format "2 Jan 2006" }}
     </time>
   </header>
