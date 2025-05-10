@@ -21,12 +21,12 @@ article section h2,
 article section h3,
 article section p,
 article section pre {
-  @apply mb-4;
+  @apply mb-6;
 }
 
 article section > h2,
 article section > h3 {
-  @apply font-semibold mt-8;
+  @apply font-semibold mt-14;
 }
 article section > h2 {
   @apply text-2xl;
@@ -37,6 +37,13 @@ article section > h3 {
 
 article section div.highlight {
   @apply mt-6 mb-6;
+}
+article section div.highlight pre {
+  /**
+   * Hugo uses inline styles for the syntax highlighting. Need the !important
+   * flag otherwise it has no effect.
+   */
+  @apply !bg-gray-200;
 }
 article section pre {
   @apply block whitespace-pre overflow-x-scroll p-4 text-sm bg-gray-200;
@@ -59,19 +66,22 @@ article section ol {
   @apply list-decimal;
 }
 
-article section img {
-  @apply mx-auto shadow-lg rounded-lg;
-}
-
 article section a {
-  @apply underline;
+  @apply text-sky-500 hover:underline;
 }
 
 article section blockquote {
   @apply text-gray-500 p-4 my-4 border-s-4 border-gray-300;
 }
+article section blockquote p {
+  @apply mb-0;
+}
 
-article section p code {
+/**
+ * Don't style the <code> element when it's a child of <pre>, that's a code
+ * block that will have its own styling.
+ */
+article section :not(pre) > code {
   @apply bg-gray-200 px-2 py-1 text-amber-700 text-sm;
 }
 

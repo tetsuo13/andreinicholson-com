@@ -19,6 +19,7 @@
 }
 </script>
 
+{{- /** Npm script will minify this CSS file, no need to do that here */ -}}
 {{- with $css := resources.Get "css/output.css" | resources.Fingerprint "sha256" -}}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
 {{- end -}}
