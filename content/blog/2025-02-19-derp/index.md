@@ -20,7 +20,9 @@ Bacon ipsum dolor amet doner esse prosciutto incididunt pastrami. Consequat lebe
 
 Here's a link to [another post]({{< relref "2025-02-21-derping-with-images" >}}).
 
-![Path along the countryside](17-536x354.jpg)
+{{<img src="17-536x354.jpg"
+  alt="Path along the countryside"
+>}}
 
 Bresaola ad cupidatat deserunt, corned beef pariatur frankfurter alcatra. Chislic pork loin pig elit esse veniam. Ea meatball doner burgdoggen sirloin cupidatat swine pork belly sint pastrami salami sausage beef ham. Magna doner dolore capicola non cow. Esse pork drumstick aute. Venison doner fatback nostrud. Flank minim beef shank picanha turkey short loin est exercitation strip steak fatback cow ground round meatball proident.
 
