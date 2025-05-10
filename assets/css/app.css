@@ -67,7 +67,7 @@ article section ol {
 }
 
 article section a {
-  @apply text-sky-500 hover:underline;
+  @apply text-sky-500 visited:text-sky-500 hover:underline;
 }
 
 article section blockquote {
