@@ -1,0 +1,6 @@
+# Default state for all rules
+default: false
+
+# MD025 - Multiple top-level headings in the same document
+# https://github.com/DavidAnson/markdownlint/blob/main/doc/md025.md
+single-title: true

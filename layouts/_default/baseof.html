@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
+<!doctype html>
+<html lang="{{ .Site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
-    <meta charset="UTF-8">
-    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-    {{ partial "head" . }}
+  <meta charset="UTF-8" />
+  <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+  {{ partial "head" . }}
 </head>
-<body>
-  {{ block "main" . }}{{ end }}
+<body class="bg-gray-100 flex flex-col min-h-screen">
+  <header class="bg-gray-800">
+    <div class="lg:w-2/3 mx-auto">
+      <div class="sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
+        <div class="flex items-center justify-between px-4 py-3 sm:p-0">
+          <div class="text-gray-400">
+            <a href="{{ .Site.BaseURL }}">{{ .Site.Params.author }}</a>
+          </div>
+        </div>
+        <nav class="px-2 pt-2 pb-4 sm:flex sm:p-0">
+          <a href="{{ .Site.BaseURL }}" class="block px-2 py-1 text-white font-semibold rounded hover:bg-gray-700 sm:mt-0 sm:ml-2">Home</a>
+          <a href="{{ ref . "/blog" }}" class="mt-1 block px-2 py-1 text-white font-semibold rounded hover:bg-gray-700 sm:mt-0 sm:ml-2">Blog</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="grow w-screen lg:w-2/3 px-6 py-18 mx-auto text-gray-800 body-font">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <footer class="bg-gray-800 text-white py-4">
+    <div class="text-center text-xs text-gray-400">
+      Copyright &copy; {{ time.Now.Year }} {{ .Site.Params.author }}
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" class="underline" target="_blank" rel="noreferrer noopener">CC BY-SA 4.0</a>
+    </div>
+  </footer>
 
   {{ if not hugo.IsServer }}
     {{ partial "analytics" . }}

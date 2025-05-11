@@ -1,0 +1,27 @@
+{{- /*
+Renders the given image.
+
+This is preferable to using the ![Description of some image](some-image.png)
+syntax because this shortcode supports additional attributes.
+
+@param {string} src The path to the image which must be a remote, page, or global resource.
+@param {string} alt The text alternative for the image.
+@param {string} [class] Additional classes to add to the image.
+
+@example {{< img src="zion-national-park.jpg" alt="Zion National Park" >}}
+@example {{< img src="zion-national-park.jpg" alt="Zion National Park" class="w-1/2" >}}
+*/ -}}
+{{- $imgClass := "mx-auto shadow-lg rounded-lg object-scale-down" }}
+{{- $image := .Page.Resources.Get (.Get "src") -}}
+
+{{- if .Get "class" }}
+  {{- $imgClass = printf "%s %s" $imgClass (.Get "class") }}
+{{- end -}}
+
+<figure class="mb-6">
+  <img src="{{ $image.RelPermalink }}"
+       alt="{{ .Get "alt" }}"
+       itemprop="image"
+       loading="lazy"
+       class="{{ $imgClass | safeCSS }}" />
+</figure>

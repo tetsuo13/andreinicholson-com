@@ -1,6 +1,6 @@
-baseURL = 'https://andreinicholson.com/'
-languageCode = 'en-us'
-title = 'Andrei Nicholson'
+baseURL = "https://andreinicholson.com/"
+languageCode = "en-us"
+title = "Andrei Nicholson"
 enableRobotsTXT = true
 
 # Disable the <meta name="generator" content="Hugo 0.74.3" /> tag.
@@ -10,9 +10,17 @@ disableHugoGeneratorInject = true
 disableKinds = ["taxonomy"]
 
 [params]
-  description = 'Software developer and UI designer.'
-  author = 'Andrei Nicholson'
-  email = 'contact@andreinicholson.com'
-  gitHubUsername = 'tetsuo13'
-  flickrPhotostream = '90329256@N00'
-  linkedInProfile = 'andrei-nicholson-2a46976'
+  description = "Software developer and UI designer."
+  author = "Andrei Nicholson"
+  email = "contact@andreinicholson.com"
+
+[permalinks]
+  [permalinks.page]
+    blog = "/blog/:year/:month/:day/:slug"
+
+[markup]
+  # https://gohugo.io/content-management/syntax-highlighting/
+  [markup.highlight]
+    # https://gohugo.io/quick-reference/syntax-highlighting-styles/
+    style = "github"
+
