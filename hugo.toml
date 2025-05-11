@@ -13,9 +13,6 @@ disableKinds = ["taxonomy"]
   description = "Software developer and UI designer."
   author = "Andrei Nicholson"
   email = "contact@andreinicholson.com"
-  gitHubUsername = "tetsuo13"
-  flickrPhotostream = "90329256@N00"
-  linkedInProfile = "andrei-nicholson-2a46976"
 
 [permalinks]
   [permalinks.page]
@@ -26,3 +23,4 @@ disableKinds = ["taxonomy"]
   [markup.highlight]
     # https://gohugo.io/quick-reference/syntax-highlighting-styles/
     style = "github"
+
