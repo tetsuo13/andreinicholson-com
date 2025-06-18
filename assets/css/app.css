@@ -51,11 +51,11 @@ article section pre {
 
 article section ul,
 article section ol {
-  @apply mb-4 list-inside;
+  @apply ml-4 mb-4 list-outside;
 }
 
 article section li {
-  @apply not-first:mt-2 pl-4;
+  @apply not-first:mt-2;
 }
 
 article section ul {
@@ -93,4 +93,20 @@ article section div.footnotes ol {
 }
 article section div.footnotes ol li p {
   @apply inline;
+}
+
+article section table {
+  @apply w-full text-sm text-left rtl:text-right text-gray-500;
+}
+article section table thead {
+  @apply text-xs text-gray-700 uppercase bg-gray-200;
+}
+article section table thead th {
+  @apply px-6 py-3;
+}
+article section table tbody tr {
+  @apply border-b border-gray-300;
+}
+article section table tbody td {
+  @apply px-6 py-4;
 }
