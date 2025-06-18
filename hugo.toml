@@ -23,4 +23,7 @@ disableKinds = ["taxonomy"]
   [markup.highlight]
     # https://gohugo.io/quick-reference/syntax-highlighting-styles/
     style = "github"
+  [markup.goldmark.renderer]
+    # Using HTML inside table cells. HTML required if you want to have lists.
+    unsafe = true
 
