@@ -1,6 +1,6 @@
 ---
 date: 2025-06-17
-lastmod: 2025-06-17
+lastmod: 2025-06-20
 draft: false
 slug: configuring-esxi-to-shut-down-all-vms-on-power-loss
 title: Configuring ESXi to Shut Down All VMs on Power Loss
@@ -85,11 +85,22 @@ Create a directory for this project and download the libraries from GitHub in th
 |   └── upsmon.py
 ```
 
+While it's rather verbose, leaving the version numbers in the directory names for the libraries adds a little to the documentation.
+
 ### The Script
 
-The crontab for root is located at `/var/spool/cron/crontabs/root`
+To use the downloaded Python libraries stored in the non-standard location, you'll need to add their paths so the script knows where to go to load them. Start the Python script with this:
+
+```python
+import sys
+
+sys.path.append('pyasn1-0.4.8')
+sys.path.append('pysnmp-5.0.1')
+```
 
 *There were a few basic Python scripts iterating on the complete solution, but they were all lost after the first reboot and the discovery of RAMdisk. Follow the examples in the docs for pysnmp.*
+
+The crontab for root is located at `/var/spool/cron/crontabs/root`
 
 [^1]: You're going to get a few notifications from the UPS about "Detected an unauthorized user attempting to access the SNMP interface" unless you add your machine's IP in the SNMP Access Control of the UPS for the community name. It's relatively safe to ignore these notifications otherwise though.
 [^2]: Forget about installing pip. The `get-pip.py` script from https://bootstrap.pypa.io/pip/3.5/get-pip.py (the last version that supports Python 3.5) ultimately fails with a "Could not find a version that satisfies the requirement pip<21.0" error message. The standalone `pip.pyz` application fails with "This version of pip does not support python 3.5 (requires >= 3.9)."
