@@ -144,7 +144,7 @@ Note the `key_type` value for the SSID to join, you'll be prompted for it in the
 Join the network with:
 
 ```
-./kasa --host 192.168.0.1 --type plug wifi join 2WIRE199
+$ ./kasa --host 192.168.0.1 --type plug wifi join 2WIRE199
 Keytype: 3
 Password:
 Asking the device to connect to 2WIRE199..
