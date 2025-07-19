@@ -1,24 +1,32 @@
 {{- /*
 Renders an alert block.
 
-The inner text of the block will be rendered as markdown, so paragraphs and
+The inner text of the block will be rendered as Markdown, so paragraphs and
 other elements are fine to use.
 
-@param {string} type The notice type. Possible values: warning.
+@param {string} type The notice type. Possible values: info, warning.
 
 @example {{<notice warning>}}This is a test.{{</notice>}}
 */ -}}
 {{- $type := .Get 0 -}}
+{{- $backgroundColorClasses := dict
+  "info" "bg-blue-50 border-blue-400"
+  "warning" "bg-yellow-50 border-yellow-400"
+}}
+{{- $textColorClasses := dict
+  "info" "text-blue-800"
+  "warning" "text-yellow-800"
+}}
 {{- $innerText := (markdownify .Inner | chomp) -}}
 
-<div class="bg-yellow-50 border-t-4 border-yellow-400 rounded-b px-4 py-3 mb-10 shadow-md" role="alert">
+<div class="border-t-4 {{ index $backgroundColorClasses $type }} rounded-b px-4 py-3 mb-10 shadow-md" role="alert">
   <div class="flex">
     <div class="py-1">
-      <svg class="fill-current h-6 w-6 text-yellow-800 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <svg class="fill-current h-6 w-6 {{ index $textColorClasses $type }} mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
         <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
       </svg>
     </div>
-    <div class="text-yellow-800">
+    <div class="{{ index $textColorClasses $type }}">
       {{- $innerText -}}
     </div>
   </div>

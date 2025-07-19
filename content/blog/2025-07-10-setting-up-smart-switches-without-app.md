@@ -1,6 +1,6 @@
 ---
 date: 2025-07-10
-lastmod: 2025-07-10
+lastmod: 2025-07-18
 draft: false
 slug: setting-up-smart-switches-without-app
 title: Setting up Smart Switches Without an App
@@ -12,6 +12,12 @@ This is a collection of notes on how to perform the initial setup for several di
 Typically, the setup process would be to install the app on my phone, set up an account, discover the device, set it up on my Wi-Fi, then uninstall the app. Even though it's minimal use of the app, I want to avoid it because I don't like signing up for accounts, and often these apps require granting location access and other seemingly nonrelated permissions during the setup process. All of this seems entirely unnecessary and more like I'm feeding more data out there that will get leaked at some point anyway.
 
 ## Belkin WeMo Mini Smart Plug
+
+{{<notice info>}}
+On the same day that this post was originally published, [Belkin announced they are ending support for most of their WeMo line](https://www.belkin.com/support-article/?articleNum=335419), including the models listed below. There are only four models *not* affected.
+
+You have until January 31, 2026 to continue using their app to set up WeMo devices onto your Wi-Fi, after that the guide below may be of some use.
+{{</notice>}}
 
 For the WeMo Mini Smart Plug devices, use the [pyWeMo Python library](https://github.com/pywemo/pywemo) to set them up.
 
