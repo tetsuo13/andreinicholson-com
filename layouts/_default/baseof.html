@@ -6,11 +6,11 @@
   {{ partial "head" . }}
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
-  <header class="bg-gray-800">
-    <div class="lg:w-2/3 mx-auto">
+  <header class="bg-gray-300">
+    <div class="lg:w-2/4 mx-auto">
       <div class="sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
         <div class="flex items-center justify-between px-4 py-3 sm:p-0">
-          <div class="text-gray-400">
+          <div class="text-black font-semibold">
             <a href="{{ .Site.BaseURL }}">{{ .Site.Params.author }}</a>
           </div>
         </div>
@@ -26,8 +26,8 @@
     {{ block "main" . }}{{ end }}
   </main>
 
-  <footer class="bg-gray-800 text-white py-4">
-    <div class="text-center text-xs text-gray-400">
+  <footer class="bg-gray-300 text-gray-500 py-4">
+    <div class="text-center text-xs ">
       Copyright &copy; {{ time.Now.Year }} {{ .Site.Params.author }}
       <a href="https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1" class="underline" target="_blank" rel="noreferrer noopener">CC BY-SA 4.0</a>
     </div>
