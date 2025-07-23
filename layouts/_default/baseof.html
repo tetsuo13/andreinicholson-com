@@ -1,3 +1,10 @@
+{{- /*
+Active link in navbar achieved by looking at the current page's section's path.
+If the current page's section's path is the same as the navbar's link's path,
+then the navbar's link will have additional classes.
+*/ -}}
+{{- $currentPage := . -}}
+{{- $section := .Site.GetPage $currentPage.Section -}}
 <!doctype html>
 <html lang="{{ .Site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
 <head>
@@ -15,14 +22,14 @@
           </div>
         </div>
         <nav class="px-2 pt-2 pb-4 sm:flex sm:p-0">
-          <a href="{{ .Site.BaseURL }}" class="block px-2 py-1 text-white font-semibold rounded hover:bg-gray-700 sm:mt-0 sm:ml-2">Home</a>
-          <a href="{{ ref . "/blog" }}" class="mt-1 block px-2 py-1 text-white font-semibold rounded hover:bg-gray-700 sm:mt-0 sm:ml-2">Blog</a>
+          <a href="{{ .Site.BaseURL }}" class="{{ if eq $section.Path "/" }}font-semibold{{ end }} block px-2 py-1 text-black rounded hover:bg-gray-200 sm:mt-0 sm:ml-2">Home</a>
+          <a href="{{ ref . "/blog" }}" class="{{ if eq $section.Path "/blog" }}font-semibold{{ end }} mt-1 block px-2 py-1 text-black rounded hover:bg-gray-200 sm:mt-0 sm:ml-2">Blog</a>
         </nav>
       </div>
     </div>
   </header>
 
-  <main class="grow w-screen lg:w-2/3 px-6 py-18 mx-auto text-gray-800 body-font">
+  <main class="grow w-screen lg:w-2/4 px-6 py-18 mx-auto text-gray-800 body-font">
     {{ block "main" . }}{{ end }}
   </main>
 
