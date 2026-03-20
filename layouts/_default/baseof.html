@@ -6,7 +6,7 @@ then the navbar's link will have additional classes.
 {{- $currentPage := . -}}
 {{- $section := .Site.GetPage $currentPage.Section -}}
 <!doctype html>
-<html lang="{{ .Site.Language.Lang }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<html lang="{{ .Site.Language.Lang }}" dir="{{ or site.Language.Direction `ltr` }}">
 <head>
   <meta charset="UTF-8" />
   <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
